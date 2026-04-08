@@ -93,7 +93,7 @@ try:
                 color = '#ff4b4b' if 'pathogenic' in str(val).lower() else ''
                 return f'background-color: {color}'
                 
-            st.dataframe(report_df.style.applymap(highlight_risk, subset=['Clinical Risk']), use_container_width=True)
+            st.dataframe(report_df.style.map(highlight_risk, subset=['Clinical Risk']), use_container_width=True)
 
 except FileNotFoundError:
     st.error("Spark data not found. Please run the Big Data engine first.")
