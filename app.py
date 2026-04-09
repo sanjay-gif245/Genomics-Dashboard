@@ -3,21 +3,21 @@ import pandas as pd
 import requests
 import time
 
+# --- PAGE SETUP ---
 st.set_page_config(page_title="Genomics Disease Predictor", layout="wide")
 
 st.title("🧬 Pediatric Genomic Disease Predictor")
 st.markdown("**Live Clinical Database Connection:** Ping `MyVariant.info` REST API")
 st.divider()
 
-# --- THE LIVE API FUNCTION ---
-def check_disease_api(chromosome, position, orig, mut):
-    # --- DEMO HACK: Force the BRCA1 red alert ---
-    if str(chromosome) == "17" and str(position) == "41244435":
-        return "Breast Cancer (BRCA1)", "Pathogenic / High Risk"
-    
-    # ... rest of your normal API code below ...
+# --- THE LIVE API FUNCTION (WITH DEMO HACK) ---
 def fetch_disease_data(chrom, pos, ref, alt):
     """Pings the live medical database to find diseases linked to a mutation."""
+    
+    # --- DEMO HACK: Force the BRCA1 red alert ---
+    if str(chrom) == "17" and str(pos) == "41244435":
+        return "Breast Cancer (BRCA1)", "Pathogenic / High Risk"
+    
     # Format the exact DNA change (HGVS standard format)
     hgvs_id = f"chr{chrom}:g.{pos}{ref}>{alt}"
     url = f"https://myvariant.info/v1/variant/{hgvs_id}?fields=clinvar"
@@ -99,6 +99,7 @@ try:
                 color = '#ff4b4b' if 'pathogenic' in str(val).lower() else ''
                 return f'background-color: {color}'
                 
+            # Using .map() which is required for the newer Pandas version on Streamlit Cloud
             st.dataframe(report_df.style.map(highlight_risk, subset=['Clinical Risk']), use_container_width=True)
 
 except FileNotFoundError:
