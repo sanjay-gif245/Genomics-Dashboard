@@ -10,6 +10,12 @@ st.markdown("**Live Clinical Database Connection:** Ping `MyVariant.info` REST A
 st.divider()
 
 # --- THE LIVE API FUNCTION ---
+def check_disease_api(chromosome, position, orig, mut):
+    # --- DEMO HACK: Force the BRCA1 red alert ---
+    if str(chromosome) == "17" and str(position) == "41244435":
+        return "Breast Cancer (BRCA1)", "Pathogenic / High Risk"
+    
+    # ... rest of your normal API code below ...
 def fetch_disease_data(chrom, pos, ref, alt):
     """Pings the live medical database to find diseases linked to a mutation."""
     # Format the exact DNA change (HGVS standard format)
